@@ -1,0 +1,16 @@
+{
+    "name": "FrostweepGames.UniWebConferencePro",
+    "rootNamespace": "FrostweepGames.UniWebConferencePro",
+    "references": [
+        "GUID:66b4cd3f82e50f14c82be8955429ad90"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
