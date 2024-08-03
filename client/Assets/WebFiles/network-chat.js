@@ -10,7 +10,7 @@ class NetworkChat {
 
   constructor(){
     
-    this.serviceHost = "frostweepgames.services";
+    this.serviceHost = "{server-host}";
     this.frameRate = 30;
     this.frameSize = {
       width: 1920,
@@ -23,6 +23,9 @@ class NetworkChat {
     this.connectedToChannel = false;
     this.joinedChannelId = null;
     this.usersInChannel = [];
+
+    this.enabledAudio = false;
+    this.enabledVideo = false;
 
     this.user = {
       id: this.getUniqueClientId(),
@@ -46,7 +49,8 @@ class NetworkChat {
       UsersUpdatedInChannel: "UsersUpdatedInChannel",
       SendMessageInChannel: "SendMessageInChannel",
       GetStateOfChannel: "GetStateOfChannel",
-  
+      SetStatusOfChatFeaturesInChannel: "SetStatusOfChatFeaturesInChannel",
+
       Connect: "connect",
       Disconnect: "disconnect",
       ConnectError: "connect_error",
@@ -85,19 +89,18 @@ class NetworkChat {
       host: this.serviceHost,
       port: "443",
       debug: 0,
-      iceTransportPolicy: "relay",
-      config: {
-        iceServers: [
-          { 
-            url: "stun:stun.frostweepgames.services:5349" 
-          },
-          { 
-            url: "turn:turn.frostweepgames.services:5349",
-            username:"uniwebconfrenceproservice", 
-            credential: "Uniwebconfrenceproservice1" 
-          }
-        ]
-      }
+      // config: {
+      //   iceServers: [
+      //     { 
+      //       urls: "stun:stun.{server-host}:5349" 
+      //     },
+      //     { 
+      //       urls: "turn:turn.{server-host}:5349",
+      //       username:"{name}", 
+      //       credential: "{secret}" 
+      //     }
+      //   ]
+      // }
     });
 
     
@@ -118,6 +121,9 @@ class NetworkChat {
   beginMediaStream(video, audio){
 
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+    this.enabledAudio = audio;
+    this.enabledVideo = video;
 
     navigator.mediaDevices
       .getUserMedia({
@@ -217,6 +223,8 @@ class NetworkChat {
         type: this.unityCallbackEvents.JoinedChannel,
         data: ""
       });
+
+      this.socket.emit(this.events.SetStatusOfChatFeaturesInChannel, { enabledAudio: this.enabledAudio, enabledVideo: this.enabledVideo });
     });
 
     this.socket.on(this.events.LeaveChannel, (data) => {
@@ -380,11 +388,16 @@ class NetworkChat {
       return;
 
     if(this.user.stream != null){
+
+      this.enabledVideo = status;
+
       let tracks = this.user.stream.getVideoTracks();
 
       for (let i = 0; i < tracks.length; i++) {
         tracks[i].enabled = status;
       }
+
+      this.socket.emit(this.events.SetStatusOfChatFeaturesInChannel, { enabledAudio: this.enabledAudio, enabledVideo: this.enabledVideo });   
     }
   }
 
@@ -394,11 +407,16 @@ class NetworkChat {
       return;
 
     if(this.user.stream != null){
+
+      this.enabledAudio = status;
+
       let tracks = this.user.stream.getAudioTracks();
 
       for (let i = 0; i < tracks.length; i++) {
         tracks[i].enabled = status;
       }
+
+      this.socket.emit(this.events.SetStatusOfChatFeaturesInChannel, { enabledAudio: this.enabledAudio, enabledVideo: this.enabledVideo });   
     }
   }
 

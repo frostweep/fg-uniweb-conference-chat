@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/FrostweepGames/UniWebConferencePro/Example/Example.unity
+  - enabled: 0
+    path: Assets/FrostweepGames/UniWebConferencePro/Examples/Example/Example.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/FrostweepGames/UniWebConferencePro/Examples/PhotonFusionMultiplayerRoomExample/Example_PFMR.unity
+    guid: 054c0cf5962b2eb42a7913f296bfe765
   m_configObjects: {}
