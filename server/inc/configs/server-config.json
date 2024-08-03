@@ -1,0 +1,7 @@
+{
+    "db_host": "{server-host}",
+    "db_name": "{database}",
+    "db_user": "{name}",
+    "db_password": "{password}",
+    "db_connection_pool_size": 5
+}
